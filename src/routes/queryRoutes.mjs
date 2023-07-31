@@ -1,9 +1,9 @@
 import express from "express";
-import { getQuery } from "../controllers/queryController.mjs";
+import { generateChatResponseFromUserQuery } from "../controllers/queryController.mjs";
 
 export const router = express.Router();
 
-router.post("/query", getQuery);
+router.post("/query", generateChatResponseFromUserQuery);
 router.get("/test", (req, res) =>
 	res.send({
 		message: "Hello World!",
