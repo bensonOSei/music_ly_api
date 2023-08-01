@@ -2,12 +2,23 @@ import axios from "axios";
 import { SPOTIFY_API_URL } from "../utils/constants.mjs";
 import { setQueryParams } from "../utils/helpers.mjs";
 
+
+/**
+ * Make a request to the Spotify API to get the song data
+ * 
+ * @param {object} songDetails Object containing song details
+ * @returns {string} Spotify URL of the song
+ */
 export const getSongData = async (songDetails) => {
 
+    // Convert songDetails object into query parameters for Spotify API
+    // Query is in the form of "track:Someone+Like+You%artist:Adele%genre:Pop"
+    // Can be found in official Spotify API documentation for search endpoint
     const queryString = setQueryParams(songDetails);
 
-    // return queryString;
  try {
+
+    // Make a request to the Spotify API 
     const response = await axios.get(SPOTIFY_API_URL, {
         params: {
             q: `remaster%${queryString}`,
@@ -23,12 +34,17 @@ export const getSongData = async (songDetails) => {
         }
     })
     
+
+    // Extract the Spotify URL from the response
     const data = response.data.tracks.items[0].external_urls.spotify;
 
     return data;
 
  } catch (error) {
-    console.error("Error in getSongData: ", error);
+    res.status(error.status).send({
+        error: error.statusText,
+        message: "Failed to get song data"
+    })
     throw new Error("Failed to connect to Spotify API");
  }
     

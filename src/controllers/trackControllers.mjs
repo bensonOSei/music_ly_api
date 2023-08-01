@@ -4,8 +4,9 @@ import { setQueryParams } from "../utils/helpers.mjs";
 export const getSongDataFromSpotify = async (req, res) => {
 
     const {songDetails} = req.body;
-    // console.log("songDetails: ", songDetails);
-    // return
+
+    if(songDetails === undefined) res.status(400).send({message: "Song details not provided"});
+
     try {
         const response = await getSongData(songDetails);
         
@@ -13,7 +14,9 @@ export const getSongDataFromSpotify = async (req, res) => {
             data: response
         })
     } catch(error) {
+        res.status(error.status).send({
+            message: error.statusText
+        })
         console.error("Error in getSongDataFromSpotify: ", error);
-
     }
 }

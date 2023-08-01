@@ -1,12 +1,13 @@
 import express from "express";
-import cors from 'cors';
+import cors from "cors";
 import { config } from "dotenv";
 import { router } from "./src/routes/queryRoutes.mjs";
-config()
+config();
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 3000;
-// app.use(cors);
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
