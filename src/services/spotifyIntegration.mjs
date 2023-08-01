@@ -23,7 +23,7 @@ export const getSongData = async (songDetails) => {
         }
     })
     
-    const data = response.data.tracks.items[0];
+    const data = response.data.tracks.items[0].external_urls.spotify;
 
     return data;
 
