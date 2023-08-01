@@ -1,10 +1,23 @@
-export const extractSongDetailsFromQuery = (response) => {
-    const songDetailsStart = response.indexOf('\n\n') + 2; // Find the starting index of song details
-    const songDetailsEnd = response.lastIndexOf('\n\n'); // Find the ending index of song details
-    
-    const songDetailsString = response.slice(songDetailsStart, songDetailsEnd);
-    const songDetails = JSON.parse(songDetailsString); // Parse the song details as JSON
+export const setQueryParams = (parameters) => {
+    // loop through parameters object into query parameters
+    let queryString = '';
 
-    return songDetails;
-    
+    for(const key in parameters) {
+
+        // replace spaces with +
+        parameters[key] = parameters[key].replace(/\s/g, '+');
+        
+        // check if key is the last key in the object
+        if(key === Object.keys(parameters)[Object.keys(parameters).length - 1]) {
+            queryString += `${key}:${parameters[key]}`
+            break;
+        }
+
+
+        queryString += `${key}:${parameters[key]}%`
+
+    }
+
+    return queryString;
 }
+

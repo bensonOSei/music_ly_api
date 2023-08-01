@@ -1,3 +1,4 @@
+import e from "express";
 import { getGptData } from "../services/gptIntegration.mjs";
 
 export const generateChatResponseFromUserQuery = async (req, res) => {
@@ -9,8 +10,7 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
         const extractedDetails = await extractSongDetailsFromQuery(response.content);
 
         res.status(200).send({
-            // message: "Successfully got query",
-            data: extractedDetails
+            data: extractedDetails,
         });
     } catch (error) {
         console.error("Error in generateChatResponseFromUserQuery: ", error);
@@ -35,11 +35,11 @@ const query = [
  * @param {object} response Response from GPT API 
  * @returns {object} Object containing natural response and song details
  */
-const extractSongDetailsFromQuery = async (response) => {
+export const extractSongDetailsFromQuery = async (response) => {
     const responseExtractionQuery = [
         {
             "role": "system",
-            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only."
+            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only. Set keys to track, artist and genre. Set values to the corresponding song details. if you are unable to extract any song details for the given keys, set the value to null."
         },
         {
             "role": "user",
@@ -51,12 +51,13 @@ const extractSongDetailsFromQuery = async (response) => {
         const queryToSend = responseExtractionQuery
         const gptResponse = await getGptData(queryToSend);
         const extractedSongDetails = JSON.parse(gptResponse.content);
-        // console.log();
         gptResponse.content = extractedSongDetails;
+        
         return {
             naturalResponse: response,
-            songDetails: gptResponse
+            songDetails: extractedSongDetails
         };
+
     } catch (error) {
         console.error("Error in extractSongDetailsFromQuery: ", error);
         throw new Error("Failed to extract song details from query");
