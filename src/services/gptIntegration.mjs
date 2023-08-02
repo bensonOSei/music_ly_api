@@ -17,6 +17,6 @@ export const getGptData = async (query) => {
         return completion.data.choices[0].message;
 	} catch (error) {
 		console.error("Error in getGptData: ", error);
-		throw new Error("Failed to get GPT data");
+		// throw new Error("Failed to get GPT data");
 	}
 };

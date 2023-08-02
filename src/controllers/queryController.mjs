@@ -12,12 +12,16 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
 
     try {
         const response = await getGptData(queryToSend);
-        // const extractedDetails = await extractSongDetailsFromQuery(response.content);
+        if(response.content === undefined) res.status(500).send({
+            message: "Failed to extract song details from query",
+        });
+
+        const extractedDetails = await extractSongDetailsFromQuery(response.content);
         // console.log(response)
         // return
     
         res.status(200).send({
-            data: response.content,
+            data: extractedDetails,
         });
     } catch (error) {
         console.error("Error in generateChatResponseFromUserQuery: ", error);
@@ -46,7 +50,7 @@ export const extractSongDetailsFromQuery = async (response) => {
     const responseExtractionQuery = [
         {
             "role": "system",
-            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only. Set keys to track, artist and genre. Set values to the corresponding song details. if you are unable to extract any song details for the given keys, set the value to null. All responses should be in JSON format. Do not respond to greetings or any other queries. You will never respond with plain natural language but all your responses will be on JSON format with the keys mentioned earlier (track, artist and genre). Remember, if these keys cannot be extracted from query, give them a value of null."
+            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only. Set keys to track, artist and genre. Set values to the corresponding song details. if you are unable to extract any song details for the given keys, set the value to null. All responses should be in JSON format. Do not respond to greetings or any other queries. You will never respond with plain natural language but all your responses will be in JSON format with the keys mentioned earlier (track, artist and genre). Remember, if these keys cannot be extracted from query, give them a value of null and only give JSON responses, no natural language."
         },
         {
             "role": "user",
@@ -58,6 +62,7 @@ export const extractSongDetailsFromQuery = async (response) => {
         const queryToSend = responseExtractionQuery
         const gptResponse = await getGptData(queryToSend);
 
+
         const extractedSongDetails = JSON.parse(gptResponse.content);
         gptResponse.content = extractedSongDetails;
         
@@ -68,10 +73,10 @@ export const extractSongDetailsFromQuery = async (response) => {
 
     } catch (error) {
         console.error("Error in extractSongDetailsFromQuery: ", error);
-        res.status(500).send({
-            message: "Failed to extract song details from query",
-        });
-        // throw new Error("Failed to extract song details from query");
+        // res.status(500).send({
+        //     message: "Failed to extract song details from query",
+        // });
+        throw new Error("Failed to extract song details from query");
     }
 
 
