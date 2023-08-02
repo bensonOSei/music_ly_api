@@ -4,6 +4,7 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
 
     const queryToSend = query;
 
+
     // Loop the req.body object
     for (const [key, value] of Object.entries(req.body)) {
         queryToSend.push(value)
@@ -11,10 +12,12 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
 
     try {
         const response = await getGptData(queryToSend);
-        const extractedDetails = await extractSongDetailsFromQuery(response.content);
-
+        // const extractedDetails = await extractSongDetailsFromQuery(response.content);
+        // console.log(response)
+        // return
+    
         res.status(200).send({
-            data: extractedDetails,
+            data: response.content,
         });
     } catch (error) {
         console.error("Error in generateChatResponseFromUserQuery: ", error);
