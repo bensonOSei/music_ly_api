@@ -41,10 +41,8 @@ export const getSongData = async (songDetails) => {
     return data;
 
  } catch (error) {
-    res.status(error.status).send({
-        error: error.statusText,
-        message: "Failed to get song data"
-    })
+    // catch error well
+    console.log(error)
     throw new Error("Failed to connect to Spotify API");
  }
     

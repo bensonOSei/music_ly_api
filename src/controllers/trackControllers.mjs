@@ -3,7 +3,7 @@ import { setQueryParams } from "../utils/helpers.mjs";
 
 export const getSongDataFromSpotify = async (req, res) => {
 
-    const {songDetails} = req.body;
+    const songDetails = req.body;
 
     if(songDetails === undefined) res.status(400).send({message: "Song details not provided"});
 
@@ -14,9 +14,9 @@ export const getSongDataFromSpotify = async (req, res) => {
             data: response
         })
     } catch(error) {
-        res.status(error.status).send({
-            message: error.statusText
-        })
+        // res.status(500).send({
+        //     message: error
+        // })
         console.error("Error in getSongDataFromSpotify: ", error);
     }
 }

@@ -1,10 +1,6 @@
-import { OPENAI_API_URL } from "../utils/constants.mjs";
 import { Configuration, OpenAIApi } from "openai";
-// import { config } from "dotenv";
-// config()
 
 export const getGptData = async (query) => {
-	// return query;
 	try {
 
 		const config = new Configuration({

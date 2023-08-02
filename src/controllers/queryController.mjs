@@ -1,12 +1,16 @@
-import e from "express";
 import { getGptData } from "../services/gptIntegration.mjs";
 
 export const generateChatResponseFromUserQuery = async (req, res) => {
-    
-    try {
-        const queryToSend = [...query, req.body]
-        const response = await getGptData(queryToSend);
 
+    const queryToSend = query;
+
+    // Loop the req.body object
+    for (const [key, value] of Object.entries(req.body)) {
+        queryToSend.push(value)
+    }
+
+    try {
+        const response = await getGptData(queryToSend);
         const extractedDetails = await extractSongDetailsFromQuery(response.content);
 
         res.status(200).send({
@@ -15,7 +19,7 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
     } catch (error) {
         console.error("Error in generateChatResponseFromUserQuery: ", error);
         res.status(500).send({
-            message: "Failed to get query",
+            error: "Failed to get query",
         });
     }
 }
@@ -24,7 +28,7 @@ export const generateChatResponseFromUserQuery = async (req, res) => {
 const query = [
     {
         "role": "system",
-        "content": `You are a song recommendation bot. You can recommend songs based my mood, genre and lyrics. You can only answer questions related to songs. `
+        "content": `You are a song recommendation bot called Rec.AI. You can recommend songs based my mood, genre and lyrics. You can only answer questions related to songs.`
     }
 ]
 
@@ -39,7 +43,7 @@ export const extractSongDetailsFromQuery = async (response) => {
     const responseExtractionQuery = [
         {
             "role": "system",
-            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only. Set keys to track, artist and genre. Set values to the corresponding song details. if you are unable to extract any song details for the given keys, set the value to null."
+            "content" : "You are song extraction bot. You analyze natural language queries and extract song details from them. You will provide response in the form of JSON only. Set keys to track, artist and genre. Set values to the corresponding song details. if you are unable to extract any song details for the given keys, set the value to null. All responses should be in JSON format. Do not respond to greetings or any other queries. You will never respond with plain natural language but all your responses will be on JSON format with the keys mentioned earlier (track, artist and genre). Remember, if these keys cannot be extracted from query, give them a value of null."
         },
         {
             "role": "user",
@@ -50,6 +54,7 @@ export const extractSongDetailsFromQuery = async (response) => {
     try {
         const queryToSend = responseExtractionQuery
         const gptResponse = await getGptData(queryToSend);
+
         const extractedSongDetails = JSON.parse(gptResponse.content);
         gptResponse.content = extractedSongDetails;
         
@@ -60,7 +65,10 @@ export const extractSongDetailsFromQuery = async (response) => {
 
     } catch (error) {
         console.error("Error in extractSongDetailsFromQuery: ", error);
-        throw new Error("Failed to extract song details from query");
+        res.status(500).send({
+            message: "Failed to extract song details from query",
+        });
+        // throw new Error("Failed to extract song details from query");
     }
 
 
