@@ -4,9 +4,6 @@ export const setQueryParams = (parameters) => {
 
     for(const key in parameters) {
 
-        // replace spaces with +
-        parameters[key] = parameters[key].replace(/\s/g, '+');
-        
         // check if key is the last key in the object
         if(key === Object.keys(parameters)[Object.keys(parameters).length - 1]) {
             queryString += `${key}:${parameters[key]}`
@@ -19,5 +16,10 @@ export const setQueryParams = (parameters) => {
     }
 
     return queryString;
+}
+
+
+export function isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0;
 }
 

@@ -18,5 +18,9 @@ export const getGptData = async (query) => {
 	} catch (error) {
 		console.error("Error in getGptData: ", error);
 		// throw new Error("Failed to get GPT data");
+		return {
+			error: error.response.statusText,
+			code: error.response.status
+		}
 	}
 };

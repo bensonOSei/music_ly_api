@@ -1,21 +1,39 @@
 import { getSongData } from "../services/spotifyIntegration.mjs";
 import { setQueryParams } from "../utils/helpers.mjs";
+import { extractSongDetailsFromQuery } from "./queryController.mjs";
 
 export const getSongDataFromSpotify = async (req, res) => {
 
-    const songDetails = req.body;
+    const rawResponse = req.body.content;
 
-    if(songDetails === undefined) res.status(400).send({message: "Song details not provided"});
+
+    // Extract song details
+    const extractedData = await extractSongDetailsFromQuery(rawResponse);
+
+
+    if(extractedData.hasOwnProperty('error')) {
+        res.status(extractedData.code).send({
+            data: extractedData,
+        })
+        return
+    }
+
 
     try {
-        const response = await getSongData(songDetails);
+        const response = await getSongData(extractedData);
+
+        if(response.hasOwnProperty('error')) {
+            res.status(response.code).send({
+                data: response,
+            });
+            
+            return;
+        }
         
-        res.status(200).send({
-            data: response
-        })
+        res.status(200).send({response})
     } catch(error) {
-        // res.status(500).send({
-        //     message: error
+        // res.send({
+        //     message: error.statusMessage
         // })
         console.error("Error in getSongDataFromSpotify: ", error);
     }
