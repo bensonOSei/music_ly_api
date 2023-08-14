@@ -73,3 +73,28 @@ export const extractSongDetailsFromQuery = async (response) => {
 		};
 	}
 };
+
+
+
+export const streamChatResponse = (req, res) => {
+	res.setHeader('Content-Type', 'text/event-stream');
+	res.setHeader('Cache-Control', 'no-cache');
+	res.setHeader('Connection', 'keep-alive');
+	res.flushHeaders();
+
+	console.log(req.body)
+
+	const queryToSend = [prompt, ...req.body];
+
+	const interval = setInterval( () => {
+		const response = 'This is a response' // Replace with actual response generation
+		res.write('data: {"message": "Sending query..."}\n\n');
+	}, 1000); // Adjust the interval as needed
+	
+	  // Clean up when the client disconnects
+	  req.on('close', () => {
+		clearInterval(interval);
+		res.end();
+	  });
+
+}

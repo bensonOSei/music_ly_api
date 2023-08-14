@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import { router } from "./src/routes/queryRoutes.mjs";
+import { authRouter } from "./src/routes/authRoutes.mjs";
+import { usersRouter } from "./src/routes/userRoutes.mjs";
 config();
 
 const app = express();
@@ -17,6 +19,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", router);
+app.use('/auth',authRouter)
+app.use('/users', usersRouter)
 
 app.listen(port, () => {
 	console.log(`Server started on port ${port}`);
