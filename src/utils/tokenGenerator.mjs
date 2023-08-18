@@ -7,6 +7,7 @@ export const tokenize = (payload) => {
 export const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(token, process.env.APP_KEY);
+        
         if(!decoded) {
             return false;
         }
