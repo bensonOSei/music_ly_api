@@ -151,7 +151,12 @@ export const updateImage = async (req,res) => {
         return
     }
 
+    const sendUserData = userResource(updatedUser)
+
+    const token = tokenize(sendUserData)
+
     res.status(201).send({
-        data: updatedUser.imagePath
+        data: sendUserData,
+        token: token
     })
 }

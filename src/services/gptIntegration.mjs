@@ -18,6 +18,13 @@ export const getGptData = async (query) => {
 	} catch (error) {
 		console.error("Error in getGptData: ", error);
 		// throw new Error("Failed to get GPT data");
+
+		if(error.response === undefined) {
+			return {
+				error: "Failed to connect",
+				code: 500
+			}
+		}
 		return {
 			error: error.response.statusText,
 			code: error.response.status

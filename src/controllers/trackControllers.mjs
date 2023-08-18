@@ -1,5 +1,4 @@
 import { getSongData } from "../services/spotifyIntegration.mjs";
-import { setQueryParams } from "../utils/helpers.mjs";
 import { extractSongDetailsFromQuery } from "./queryController.mjs";
 
 export const getSongDataFromSpotify = async (req, res) => {
@@ -20,15 +19,9 @@ export const getSongDataFromSpotify = async (req, res) => {
 
 
     try {
-        const response = await getSongData(extractedData);
+        const response = await getSongData(extractedData).then(data => data);
+        // console.log('response',response)
 
-        if(response.hasOwnProperty('error')) {
-            res.status(response.code).send({
-                data: response,
-            });
-            
-            return;
-        }
         
         res.status(200).send({response})
     } catch(error) {

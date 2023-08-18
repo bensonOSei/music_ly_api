@@ -1,3 +1,5 @@
+import { DateTime, Interval } from "luxon";
+
 export const setQueryParams = (parameters) => {
     // loop through parameters object into query parameters
     let queryString = '';
@@ -21,5 +23,25 @@ export const setQueryParams = (parameters) => {
 
 export function isObjectEmpty(obj) {
     return Object.keys(obj).length === 0;
+}
+
+export const isExpired = (expiryDate) => {
+    // console.log('ex-date',expiryDate)
+    
+    const expiry = new Date(expiryDate).getTime();
+    const now = new Date().getTime();
+    const interval = expiry - now
+    // console.log('expiry',expiry)
+    // console.log('now',now)
+    // console.log('interval', interval)
+
+    return interval <= 0;
+}
+
+export const getExpirationDate = () => {
+    // set expiration to 1 hour from now
+    const expiration = DateTime.now().plus({ hours: 1 });
+
+    return expiration.toISO();
 }
 

@@ -26,5 +26,6 @@ export const validateRegister = validate({
     firstName: "required",
     lastName: "required",
     email: "required|email",
-    password: "required|minLength:8"
+    password: "required|minLength:8",
+    confirmPassword: "required|same:password"
 })

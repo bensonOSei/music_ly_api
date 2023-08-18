@@ -21,3 +21,12 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
+
+model Spotify {
+  id Int @id @default(autoincrement())
+  client_id String 
+  client_secret String 
+  access_token String 
+  expires_in DateTime?
+  initiated_at DateTime @default(now())
+}

@@ -16,4 +16,5 @@ usersRouter.get("/:id", (req, res) => {
 
 usersRouter.post("/register", validateRegister, create);
 
-usersRouter.patch("/image", authenticate, updateImage)
+usersRouter.patch("/image", authenticate, updateImage);
+
