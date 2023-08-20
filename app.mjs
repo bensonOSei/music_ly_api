@@ -4,11 +4,18 @@ import { config } from "dotenv";
 import { router } from "./src/routes/queryRoutes.mjs";
 import { authRouter } from "./src/routes/authRoutes.mjs";
 import { usersRouter } from "./src/routes/userRoutes.mjs";
+import { sequelize } from "./src/database/connection.mjs";
 config();
 
 const app = express();
 app.use(cors());
 const port = process.env.PORT || 3000;
+
+
+// sync database
+sequelize.sync().then(() => {
+	console.log('Database connected')
+})
 
 app.use(express.json());
 

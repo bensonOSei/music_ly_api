@@ -21,7 +21,8 @@ export const login = async (req,res) => {
         }
         return user
     })
-    .catch(() => {
+    .catch((err) => {
+        console.log(err)
         res.status(500).send({
             message: "Error getting user"
         })
@@ -53,10 +54,6 @@ export const login = async (req,res) => {
         data: userResource(user),
         token: token
     })
-
-
-    
-    
 }
 
 

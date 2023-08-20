@@ -1,41 +1,37 @@
-import { connection } from "../database/connection.mjs";
+// import { sequelize } from "../database/connection.mjs";
+import { User } from "../database/models/User.mjs";
 
 export const createUser = async (userDetails) => {
-    const user = await connection.user.create({
-        data: userDetails
-    });
-    return user;
-}
+	const user = await User.create(userDetails);
+	return user;
+};
 
 export const getAllUsers = async () => {
-    const users = await connection.user.findMany();
-    return users;
-}
+	const users = await User.findAll();
+	return users;
+};
 
 export const getUserById = async (id) => {
-    const user = await connection.user.findUnique({
-        where: {
-            id: parseInt(id)
-        }
-    });
-    return user;
-}
+	const user = await User.findByPk(id);
+	return user;
+};
 
 export const getUserByEmail = async (email) => {
-    const user = await connection.user.findUnique({
-        where: {
-            email: email
-        }
-    });
-    return user;
-}
+	// return
+	const user = await User.findOne({
+		where: {
+			email: email,
+		},
+	});
+	return user;
+};
 
 export const updateUser = async (id, userDetails) => {
-    const user = await connection.user.update({
+	const user = await User.update(userDetails,{
         where: {
-            id: parseInt(id)
-        },
-        data: userDetails
+            id: id
+        }
     });
-    return user;
-}
+
+	return user;
+};
