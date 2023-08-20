@@ -91,6 +91,7 @@ export const getSongData = async (songDetails) => {
 					code: 500,
 				};
 
+
 			return {
 				error: error.response.statusText,
 				code: error.response.status,
@@ -140,13 +141,13 @@ export const getAccessTokenFromSpotify = async () => {
 	const newToken = await axios
 		.request(config)
 		.then(async (response) => {
-			// console.log("response",response.data)
+			console.log("response",response.data)
 			const { access_token } = response.data;
 			const expires_in = getExpirationDate();
 
 			const saveToken = await setAccessToken(access_token, expires_in)
 				.then((data) => {
-					// console.log(data);
+					console.log(data);
 					return data;
 				})
 				.catch((err) => {
@@ -161,5 +162,9 @@ export const getAccessTokenFromSpotify = async () => {
 			return false;
 		});
 
-	return newToken;
+	const savedToken = await getCredentials().then(data => data).catch(() => false)
+
+
+
+	return savedToken.access_token;
 };

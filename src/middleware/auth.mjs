@@ -19,7 +19,6 @@ export const authenticate = async (req, res, next) => {
         })
         return
     }
-
     req.user = userResource(decoded)
     next()
 }
