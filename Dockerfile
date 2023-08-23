@@ -1,18 +1,19 @@
-FROM node:18-alpine
+FROM node:18.14.2
 
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
 COPY package*.json ./
 
 RUN npm install
 
-# Bundle app source
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+ARG PORT=3000
 
-# Run the app
-CMD [ "node", "app.mjs" ]
+ENV PORT=$PORT
+
+EXPOSE $PORT
+
+RUN echo "running on port ${PORT}"
+
+CMD ["npm", "run", "start"]
