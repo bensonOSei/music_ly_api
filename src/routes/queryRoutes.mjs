@@ -13,8 +13,8 @@ router.post("/query/song", getSongDataFromSpotify )
 
 router.post("/query/extract", extractSongDetailsFromQuery)
 
-router.get("/test", (req, res) =>
-	res.send({
-		message: "Hello World!",
+router.get("/healthcheck", (req, res) =>
+	res.status(200).send({
+		message: "Service healthy :)",
 	})
 );

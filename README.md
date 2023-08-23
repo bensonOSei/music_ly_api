@@ -29,3 +29,16 @@ cp .env.example .env
 ```bash
 npm run dev
 ```
+
+## Run the application using Docker Compose
+Running with docker compose 
+
+
+Using Docker Compose provides a significant advantage by effortlessly setting up and managing both your Music.ly application and the MySQL database. This eliminates the complexity of manually configuring and maintaining the database environment. This streamlined approach saves time and ensures consistent setups, making development and testing smoother.
+
+
+```
+docker-compose up
+```
+
+Now your Music.ly application is up and running along with a MySQL database. You can access the application at http://localhost:3000.

@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "${DATABASE_PORT:-3306}:${DATABASE_PORT:-3306}"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  api:
+    container_name: music_ly
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
