@@ -30,7 +30,18 @@ cp .env.example .env
 npm run dev
 ```
 
-## Run the application using Docker Compose
+## Run the application Docker
+commands for building and running the app using docker have already 
+being scripted inside the build.sh to easy of use and convenience
+
+To run the app using docker, just run
+
+```
+bash build.sh
+```
+feel free to customize the build.sh based on your preferences
+
+### Using Docker Compose
 Running with docker compose 
 
 
