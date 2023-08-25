@@ -8,9 +8,7 @@ import { sequelize } from "./src/database/connection.mjs";
 config();
 
 const app = express();
-app.use(cors({
-	origin: ['https://recai.netlify.app', 'https://www.recai.netlify.app']
-}));
+app.use(cors());
 const port = process.env.PORT || 3000;
 
 
